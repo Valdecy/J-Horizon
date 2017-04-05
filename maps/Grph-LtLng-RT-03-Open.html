@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Street Map</title>
+    <meta charset = "utf-8" />
+	
+	<link 
+	rel  = "stylesheet" 
+	href = "leaflet-1.03\leaflet.css" 
+	/>
+	
+	<link 
+	rel  = "stylesheet" 
+	href = "leaflet-routing-machine-3.2.5\dist\leaflet-routing-machine.css" 
+	/>
+	
+	<link 
+	rel  = "stylesheet"
+	href = "font-awesome-4.7.0\css\font-awesome.min.css" 
+	/>
+	
+    <link 
+	rel  = "stylesheet" 
+	href = "leaflet-awesome-markers-2.0\dist\leaflet.awesome-markers.css"
+	/>
+	
+	 <link 
+	 rel  = "stylesheet" 
+	 type = "text/css" 
+	 href = "leaflet-markercluster-0.2\dist\MarkerCluster.css" 
+	 />
+	 
+    <link 
+	rel  = "stylesheet" 
+	type = "text/css" 
+	href = "leaflet-markercluster-0.2\dist\MarkerCluster.Default.css" 
+	/>
+	
+    <style>
+        body {
+            padding: 0;
+            margin : 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width : 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id = "map"></div>
+	
+	<!-- import scripts -->
+    <script src  = "leaflet-1.03\leaflet.js" ></script>
+    <script src  = "leaflet-routing-machine-3.2.5\dist\leaflet-routing-machine.js"></script>
+	<script src  = "colors.js"></script> 
+	<script src  = "latlong.js"></script> 
+	<script src  = "latlong_depots.js"></script> 
+	<script src  = "latlong_dlv.js"></script> 
+	<script src  = "latlong_pck.js"></script> 
+	<script src  = "latlong_route.js"></script>
+	<script src  = "latlong_route_complete.js"></script>
+	<script src  = "leaflet-awesome-markers-2.0\dist\leaflet.awesome-markers.js"></script>
+	<script src  = "leaflet-markercluster-0.2\dist\leaflet.markercluster.js"></script>
+	
+	<!-- code -->
+	<script type = "text/javascript"> 
+	
+		<!-- map -->
+        var map  = L.map('map');
+        mapLink  = 
+            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+			minZoom: 2,
+            maxZoom: 18,
+            }).addTo(map);
+		<!-- end map -->
+
+		<!-- add markers -->
+		var markerClusters = L.markerClusterGroup(); 		
+        for (var i = 0; i < latlong_depots.length; i++) {
+
+				var lat  = latlong_depots[i][0];
+				var lon  = latlong_depots[i][1];
+				var text = latlong_depots[i][2];
+				var markerLocation = new L.LatLng(lat, lon);
+				var marker = new L.Marker(markerLocation,  
+				{
+				 icon: L.AwesomeMarkers.icon({icon: 'home',  prefix: 'fa', markerColor: 'orange', iconColor: 'white' }),
+				 draggable: false,
+				 title: 'Click for more information', 
+				 opacity: 1.0
+				}
+				);
+
+				map.addLayer(marker);
+				marker.bindPopup(text);
+		}
+			for (var i = 0; i < latlong_dlv.length; i++) { 
+				lat  = latlong_dlv[i][0];
+				lon  = latlong_dlv[i][1];
+				text = latlong_dlv[i][2] + "_dlv";
+				markerLocation = new L.LatLng(lat, lon);
+				var marker2 = new L.Marker(markerLocation,  
+				{
+				 icon: L.AwesomeMarkers.icon({icon: 'circle',  prefix: 'fa', markerColor: 'red', iconColor: 'white' }),
+				 draggable: false,
+				 title: 'Click for more information', 
+				 opacity: 1.0
+				}
+				);
+				markerClusters.addLayer(marker2);
+				marker2.bindPopup(text);
+			}
+			
+			for (var i = 0; i < latlong_pck.length; i++) { 
+				lat  = latlong_pck[i][0];
+				lon  = latlong_pck[i][1];
+				text = latlong_pck[i][2] + "_pck";
+				markerLocation = new L.LatLng(lat, lon);
+				var marker3 = new L.Marker(markerLocation,  
+				{
+				 icon: L.AwesomeMarkers.icon({icon: 'circle',  prefix: 'fa', markerColor: 'purple', iconColor: 'white' }),
+				 draggable: false,
+				 title: 'Click for more information', 
+				 opacity: 1.0
+				}
+				);
+				markerClusters.addLayer(marker3);
+				marker3.bindPopup(text);
+			}
+		map.addLayer(markerClusters);
+		<!-- end add markers -->
+		
+		<!-- route -->	
+		var r = 0;
+		var s = 0;
+		var t = 0;
+	    var u = 0;
+				
+		for (var i = 0; i < latlong_route.length; i++) {
+		  if (latlong_route_complete[i][5] == "start" || latlong_route_complete[i][5] == "end"){
+			r = r + 1;
+		  }
+		}
+
+		for (var i = 0; i < latlong_route.length; i++) {
+		  if (latlong_route_complete[i][5] == "start" || latlong_route_complete[i][5] == "end"){
+			s = i;
+			i = latlong_route.length;
+		  }
+		}
+		
+		for (var i = s + 1; i < latlong_route.length; i++) {
+		  if (latlong_route_complete[i][5] == "start" || latlong_route_complete[i][5] == "end"){
+			t = i;
+			i = latlong_route.length;
+		  }
+		}
+		
+		r = r/2;
+		
+		var routeControl = L.Routing.control({
+            waypoints: latlong_route.slice(s, t),
+			lineOptions: {
+			styles: [
+			{color: colors[0], opacity: 1, weight: 3}
+			]
+			},
+			createMarker: function() { return null; },
+            routeWhileDragging: false,
+			addWaypoints : false,
+			show: false
+        }).addTo(map);
+		
+		for (var i = 0; i < r - 1; i++) {
+		
+			if (i > -1){
+				u = u + 1;
+			}
+			
+			if (u == colors.length){
+				u = 0;
+			}
+			
+			s = t + 1;
+			
+			for (var j = s + 1; j < latlong_route.length; j++) {
+			  if (latlong_route_complete[j][5] == "start" || latlong_route_complete[j][5] == "end"){
+				t = j;
+				j = latlong_route.length;
+			  }
+			}
+			
+			var routeControl = L.Routing.control({
+				waypoints: latlong_route.slice(s, t), 
+				lineOptions: {
+				styles: [
+				{color: colors[u], opacity: 1, weight: 3}
+				]
+				},
+				createMarker: function() { return null; },
+				routeWhileDragging: false,
+				addWaypoints : false,
+				show: false
+			}).addTo(map);
+		
+		}
+		<!-- end route -->
+	
+    </script>
+	<!-- end code -->
+	<!-- end import scripts -->
+	
+</body>
+</html>

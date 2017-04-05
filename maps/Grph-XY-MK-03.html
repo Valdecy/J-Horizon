@@ -1,0 +1,151 @@
+<html>
+<head>
+   <title>xy Map</title>
+   <meta charset = "utf-8" />
+   
+   <link 
+   rel  = "stylesheet" 
+   type = "text/css" 
+   href = "jsxgraph-0.99.5\jsxgraph.css" 
+   />
+   
+   <script 
+   type = "text/javascript" 
+   src  = "jsxgraph-0.99.5\jsxgraphcore.js"
+   ></script>  
+</head>
+<body>
+  <div id = "myBox" class = "jxgbox center-block" style = "width:100%; height:100%; border: 1px solid black"></div>
+   
+   <!-- import scripts -->
+   <script src  = "xy_depots.js"></script> 
+   <script src  = "xy_dlv.js"></script> 
+   <script src  = "xy_pck.js"></script> 
+   
+   <!-- code -->
+   <script type="text/javascript">
+         
+		var xp = -100000000000000000;
+		var xn =  100000000000000000;
+		var yp = -100000000000000000;
+		var yn =  100000000000000000;
+		
+		for (i = 0; i < xy_depots.length; i++) { 
+			if (xp <= xy_depots[i][0]){
+			
+				xp = xy_depots[i][0];
+			}
+			if (yp <= xy_depots[i][1]){
+			
+				yp = xy_depots[i][1];
+			}
+		   if (xn > xy_depots[i][0]){
+		   
+				xn = xy_depots[i][0];
+			}
+		   if (yn > xy_depots[i][1]){
+		   
+				yn = xy_depots[i][1];
+			}
+		}
+		
+		for (i = 0; i < xy_dlv.length; i++) { 
+			if (xp <= xy_dlv[i][0]){
+			
+				xp = xy_dlv[i][0];
+			}
+			if (yp <= xy_dlv[i][1]){
+			
+				yp = xy_dlv[i][1];
+			}
+		   if (xn > xy_dlv[i][0]){
+		   
+				xn = xy_dlv[i][0];
+			}
+		   if (yn > xy_dlv[i][1]){
+		   
+				yn = xy_dlv[i][1];
+			}
+		}
+		
+		for (i = 0; i < xy_pck.length; i++) { 
+			if (xp <= xy_pck[i][0]){
+			
+				xp = xy_pck[i][0];
+			}
+			if (yp <= xy_pck[i][1]){
+			
+				yp = xy_pck[i][1];
+			}
+		   if (xn > xy_pck[i][0]){
+		   
+				xn = xy_pck[i][0];
+			}
+		   if (yn > xy_pck[i][1]){
+		   
+				yn = xy_pck[i][1];
+			}
+		}
+		
+		xn = (xn - 1)*1.21;
+		yp = (yp + 1)*1.21;
+		xp = (xp + 1)*1.21;
+		yn = (yn - 1)*1.21; 
+		
+		if (xn >= 0){
+			xn = -1.21;
+		}
+		
+		if (yn >= 0){
+			yn = -1.21;
+		}
+		
+		if (xp <= 0){
+			xp = 1.21;
+		}
+		
+		if (yp <= 0){
+			yp = 1.21;
+		}
+		
+		<!-- chart -->
+        var board = JXG.JSXGraph.initBoard('myBox', 
+		{
+		boundingbox:[xn, yp, xp, yn],  
+		axis:{ ticks: { drawLabels: true }, firstArrow: true, strokeColor: 'black' },
+		grid: { strokeWidth: 0.75 },
+		showNavigation: true,		
+		showCopyright:false,
+		keepaspectratio: false
+		}
+		);
+		<!-- end chart -->
+		
+		<!-- add points -->
+		for (var i = 0; i < xy_depots.length; i++) {
+		
+			board.create('point', [xy_depots[i][0], xy_depots[i][1]], {name:xy_depots[i][2], face: '[]', size: 5, strokeColor: 'black', fillColor: 'goldenrod', highlightStrokeColor: 'green', highlightFillColor: 'green' }).setProperty({fixed:true});
+			
+	    }
+		for (var i = 0; i < xy_dlv.length; i++) {
+		
+			board.create('point',[xy_dlv[i][0], xy_dlv[i][1]], {name: xy_dlv[i][2] + "-dlv", face:'o' , size: 3, strokeColor: 'black', fillColor:'orangered', highlightStrokeColor: 'teal', highlightFillColor: 'teal'}).setProperty({fixed:true});
+			
+	    }
+		for (var i = 0; i < xy_pck.length; i++) {
+		
+			board.create('point',[xy_pck[i][0], xy_pck[i][1]], {name: xy_pck[i][2] + "-pck", face:'o' , size: 3, strokeColor: 'black', fillColor:'springgreen', highlightStrokeColor: 'mediumorchid', highlightFillColor: 'mediumorchid'}).setProperty({fixed:true});
+			
+	    }
+		<!-- end add points -->
+		
+	    <!-- route -->		
+		
+		<!-- end route -->
+		
+  </script>
+  <!-- end code -->
+  <!-- end import scripts -->
+  
+</body>
+</html>

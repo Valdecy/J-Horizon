@@ -1,0 +1,160 @@
+<html>
+<head>
+   <title>xy Map</title>
+   <meta charset = "utf-8" />
+   
+   <link 
+   rel  = "stylesheet" 
+   type = "text/css" 
+   href = "jsxgraph-0.99.5\jsxgraph.css" 
+   />
+   
+   <script 
+   type = "text/javascript" 
+   src  = "jsxgraph-0.99.5\jsxgraphcore.js"
+   ></script>  
+</head>
+<body>
+  <div id = "myBox" class = "jxgbox center-block" style = "width:100%; height:100%; border: 1px solid black"></div>
+   
+   <!-- import scripts -->
+   <script src  = "colors.js"></script> 
+   <script src  = "xy.js"></script> 
+   <script src  = "xy_route.js"></script> 
+   <script src  = "xy_route_complete.js"></script>
+   
+   <!-- code -->
+   <script type="text/javascript">
+         
+		var xp = -100000000000000000;
+		var xn =  100000000000000000;
+		var yp = -100000000000000000;
+		var yn =  100000000000000000;
+		
+		for (i = 0; i < xy_route.length; i++) { 
+			if (xp <= xy_route[i][0]){
+			
+				xp = xy_route[i][0];
+			}
+			if (yp <= xy_route[i][1]){
+			
+				yp = xy_route[i][1];
+			}
+		   if (xn > xy_route[i][0]){
+		   
+				xn = xy_route[i][0];
+			}
+		   if (yn > xy_route[i][1]){
+		   
+				yn = xy_route[i][1];
+			}
+		}
+		
+		xn = (xn - 1)*1.21;
+		yp = (yp + 1)*1.21;
+		xp = (xp + 1)*1.21;
+		yn = (yn - 1)*1.21;
+		
+		if (xn >= 0){
+			xn = -1.21;
+		}
+		
+		if (yn >= 0){
+			yn = -1.21;
+		}
+		
+		if (xp <= 0){
+			xp = 1.21;
+		}
+		
+		if (yp <= 0){
+			yp = 1.21;
+		}
+		
+		<!-- chart -->
+        var board = JXG.JSXGraph.initBoard('myBox', 
+		{
+		boundingbox:[xn, yp, xp, yn],  
+		axis:{ ticks: { drawLabels: true }, firstArrow: true, strokeColor: 'black' },
+		grid: { strokeWidth: 0.75 },
+		showNavigation: true,		
+		showCopyright:false,
+		keepaspectratio: false
+		}
+		);
+		<!-- end chart -->
+		
+	    <!-- route -->	
+		var r = 0;
+		var s = 0;
+		var t = 0;
+	    var u = 0;
+				
+		for (var i = 0; i < xy_route.length; i++) {
+		  if (xy_route_complete[i][5] == "start" || xy_route_complete[i][5] == "end"){
+			r = r + 1;
+		  }
+		}
+		
+		for (var i = 0; i < xy_route.length; i++) {
+		  if (xy_route_complete[i][5] == "start" || xy_route_complete[i][5] == "end"){
+			s = i;
+			i = xy_route.length;
+		  }
+		}
+		
+		for (var i = s + 1; i < xy_route.length; i++) {
+		  if (xy_route_complete[i][5] == "start" || xy_route_complete[i][5] == "end"){
+			t = i - 1;
+			i = xy_route.length;
+		  }
+		}
+		
+		r = r/2;
+		
+		var p = [];
+
+		for (var i = xy_route.length - 1; i >= 0; i--) { 
+		   if (xy_route_complete[i][5] == "start" || xy_route_complete[i][5] == "end"){
+			p[i] = board.create('point', [xy_route[i][0], xy_route[i][1]], {name:xy_route[i][2], face: '[]', size: 4, strokeColor: 'black', fillColor: 'goldenrod', highlightStrokeColor: 'green', highlightFillColor: 'green' });
+			}else {
+			p[i] = board.create('point',[xy_route[i][0], xy_route[i][1]], {name: xy_route[i][2], face:'o' , size: 3, strokeColor: 'black', fillColor:'slateblue', highlightStrokeColor: 'red', highlightFillColor: 'red'});
+			}
+	    }	
+		
+		
+		for (var i = s; i < t; i++) { 
+			board.create('arrow', [p[i], p[i + 1]], {color: colors[0], dash: 1, strokeWidth: 1.5 });	
+		}
+		
+		for (var i = 0; i < (r - 1); i++) {
+		
+			if (i > -1){
+				u = u + 1;
+			}
+			
+			if (u == colors.length){
+				u = 0;
+			}
+			
+			s = t + 2;
+			
+			for (var j = s + 1; j < xy_route.length; j++) {
+			  if (xy_route_complete[j][5] == "start" || xy_route_complete[j][5] == "end"){
+				t = j - 1;
+				j = xy_route.length;
+			  }
+			}
+	
+			for (var k = s; k < t; k++) { 
+				board.create('arrow', [p[k], p[k + 1]], {color: colors[u], dash: 1, strokeWidth: 1.5 });
+		    }
+		}
+		<!-- end route -->
+
+  </script>
+  <!-- end code -->
+  <!-- end import scripts -->
+  
+</body>
+</html>

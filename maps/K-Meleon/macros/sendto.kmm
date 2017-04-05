@@ -1,0 +1,45 @@
+# K-Meleon Macros (http://kmeleon.sourceforge.net/wiki/index.php?id=MacroLanguage)
+
+# ---------- Send To submenu for web services and external applications --------------------------------------------
+#
+# Dependencies	: main.kmm (Go)
+# Resources	: -
+# Preferences	: -
+#
+# ------------------------------------------------------------------------------------------------------------------
+
+# ----- PRIVATE
+
+$_SendTo_Page="S&end Page To";
+$_SendTo_Link="S&end Link To";
+$_SendTo_Image="S&end Image To";
+$_SendTo_URL="S&end To";
+$_Mailto="&Open mailto Link";
+$_xdg_ok=substr(readfile(getpref(STRING,"kmeleon.plugins.macros.mail.mailtoClient")),0,1);
+
+# ---------------------------------------------------------------------------------------------------
+OpenMailto{
+menugrayed=substr($LinkURL,0,7)!="mailto:";
+macroinfo=_("Open the current mailto link with mail client");
+$TITLE==""?$_title=$URL:$_title=$TITLE;
+$_mail=substr($LinkURL,7);
+$_parm=index($_mail,"?");
+$_parm!=-1?$_mail=substr($_mail,0,$_parm):0;
+exec(getpref(STRING,"kmeleon.plugins.macros.mail.mailtoClient")." --subject \"".$_title."\" --body \""._("Mailed from the webpage:")." '".$URL."'\" ".$_mail);
+}
+
+
+_SendTo_BuildMenu{
+# context menus
+setmenu(DocumentSave,popup,$_SendTo_Page);
+setmenu(LinkSave,popup,$_SendTo_Link);
+setmenu(ImageSave,popup,$_SendTo_Image);
+# Go button
+setmenu(_Go_Open,popup,$_SendTo_URL);
+$tux==""?0:setmenu(LinkSave,separator,"end");
+$tux==""?0:setmenu(LinkSave,macro,_($_Mailto),OpenMailto);
+}
+$OnInit=$OnInit."_SendTo_BuildMenu;";
+
+# ------------------------------------------------------------------------------------------------------------------
+$macroModules=$macroModules."SendTo;";

@@ -1,0 +1,63 @@
+#  K-Meleon Macros (http://kmeleon.sourceforge.net/wiki/index.php?id=MacroLanguage2)
+#
+# File name: troubleshooting.kmm
+# PRIVILEGE SECTION
+# ---------- To check for user write Privilege on current profile -----
+#
+# Dependencies   : main.kmm
+# Resources		: Priviledge.ini, "chrome://kmeleon/content/kmeleon/privilege.xhtml",
+#				: "chrome://en-US[ or other]/locale/kmeleon/privilege.dtd,
+#       		: "chrome://global/skin/netError.css", and 
+#               : "chrome://global/skin/icons/warning-16.png"
+# ----------------------------------------------------------------------
+# CHKDEFAULT SECTION
+# ---------- Open Control Panel Set Default Program & Associations if Vista, 7, or 8
+#
+# Dependencies   : main.kmm
+# Resources      : HKLM", "Software\\Microsoft\\Windows NT\\CurrentVersion\\CurrentVersion"
+#                : "control /name Microsoft.DefaultPrograms" 
+# ----------------------------------------------------------------------
+
+_Privilege_RunCode {
+macroinfo=_("Check KM profile write privilege");
+$_TS_Path = getfolder(ProfileFolder);
+$_TS_Section = "Profile";
+$_TS_Key = "Current" ;
+$_TS_Value = substr($_TS_Path,0,200);
+$_TS_Path = $_TS_Path . "\\Privilege.ini";
+iniwrite($_TS_Section, $_TS_Key, $_TS_Value, $_TS_Path);
+macros(_Privilege_Validate);
+}
+
+_Privilege_Validate {
+# Value remains after delete because iniread is reading cached info in registry
+$_TS_Value2 = iniread("","","","");
+$_TS_Value2 = iniread($_TS_Section, $_TS_Key, $_TS_Value2, $_TS_Path);
+if ($_TS_Value != $_TS_Value2) {
+   $_TS_WarnPath="chrome://kmeleon/content/privilege.xhtml";
+   opennew($_TS_WarnPath);
+   } else {
+   exec("cmd /c ERASE \"".$_TS_Path."\"");
+   exec("command /c ERASE \"".$_TS_Path."\"");
+   statusbar(_("KM profile privilege checked successfully"));
+   alert(_("KM profile privilege checked successfully"), _("Check Privilege"), INFO);
+}
+}
+
+_ChkDefault_RunCode {
+exec("control /name Microsoft.DefaultPrograms");
+}
+
+_troubleshooting_BuildMenu {
+setmenu(KMDocs, popup, _("Troubleshooting"), -1);
+setmenu(_("Troubleshooting"), macro, _("Check Privilege"), _Privilege_RunCode);
+$_ChkDefault_version = readreg("HKLM", "Software\\Microsoft\\Windows NT\\CurrentVersion\\CurrentVersion");
+$_ChkDefault_interger = $_ChkDefault_version / 1;
+if ( $_ChkDefault_interger > 5 ) {
+   setmenu(_("Troubleshooting"), macro, _("Check Program Defaults"), _ChkDefault_RunCode);
+}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+$OnInit=$OnInit."_troubleshooting_BuildMenu;";
+$macroModules=$macroModules."troubleshooting;";

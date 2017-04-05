@@ -1,0 +1,32 @@
+# K-Meleon Macros (http://kmeleon.sourceforge.net/wiki/index.php?id=MacroLanguage)
+#
+# -- Flashblock ---------------------------------------------------------------------
+#
+# Dependencies	: -
+# Resources		: -
+# Preferences	: -
+#
+# -----------------------------------------------------------------------------------
+#
+$macroModules=$macroModules."flashblock;";
+$OnInit=$OnInit."_flashblock_01;";
+$__varflashblock_01="flashblock.whitelist";
+
+_flashblock_01{
+	setmenu("&Privacy",inline,_Flashblock,_Privacy_Settings);
+	setmenu(_Flashblock,popup,"Flash&block");
+	setmenu("Flash&block",macro,_("Disable flash for this website"),"_flashblock_02(Disable)");
+	setmenu("Flash&block",macro,_("Enable flash for this website"),"_flashblock_02(Enable)");
+}
+_flashblock_02{
+	menugrayed=((index($ARG,"Enable")!=-1 and index(getpref(STRING,$__varflashblock_01),substr($URL,0,index($URL,"/"))."//".hostname($URL)." ")!=-1) or (index($ARG,"Disable")!=-1 and index(getpref(STRING,$__varflashblock_01),substr($URL,0,index($URL,"/"))."//".hostname($URL)." ")==-1));
+	macroinfo=_("Edit Flashblock list");
+	if($ARG=="Enable") {
+		$__varflashblock_02=substr($URL,0,index($URL,"/"))."//".hostname($URL)." ".getpref(STRING,$__varflashblock_01);
+	}else{
+		$__varflashblock_02=gsub(substr($URL,0,index($URL,"/"))."//".hostname($URL)." ","",getpref(STRING,$__varflashblock_01));
+		$__varflashblock_02==" "?$__varflashblock_02="":0;
+	}
+	setpref(STRING,$__varflashblock_01,$__varflashblock_02);
+	id(ID_NAV_RELOAD);
+}

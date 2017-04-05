@@ -1,0 +1,45 @@
+# K-Meleon Macros (http://kmeleon.sourceforge.net/wiki/index.php?id=MacroLanguage2)
+
+# ---------- useragentmode.kmm  ---------------------------------------------------------------------------------------
+#
+# Dependencies	: main.kmm (
+# Resources	    : -
+# Preferences	: general.useragent.compatMode.firefox and kmeleon.plugins.macros.useragentmode.reset
+# ------------------------------------------------------------------------------------------------------------------
+
+useragentmode_Toggle {
+macroinfo=_("Toggle User Agent string Firefox compatible");
+menuchecked = getpref(BOOL,"general.useragent.compatMode.firefox");
+togglepref(BOOL,"general.useragent.compatMode.firefox");
+if (getpref(BOOL,"general.useragent.compatMode.firefox")) {
+    statusbar(_("User Agent is Firefox compatible mode"));
+	} else {
+    statusbar(_("User Agent is K-Meleon default"));
+	}
+}
+
+useragentmode_ExitReset {
+# Set/unset the switch
+macroinfo=_("Reset to the default User Agent string when exiting");
+menuchecked=getpref(BOOL,"kmeleon.plugins.macros.useragentmode.reset");
+togglepref(BOOL,"kmeleon.plugins.macros.useragentmode.reset");   
+}
+
+useragentmode_Reset {
+# Use the switch
+getpref(BOOL,"kmeleon.plugins.macros.useragentmode.reset")?setpref(BOOL,"general.useragent.compatMode.firefox",false):0;
+}
+
+useragentmode_BuildMenu {
+# Tools menu
+$_u=_("User Agent Mo&de");
+setmenu(PrivacySecurity,popup,$_u);
+setmenu($_u,macro,"&FireFox Compatible","useragentmode_Toggle",0);
+setmenu($_u,macro,"&Reset To K-Meleon On Exit","useragentmode_ExitReset",1);
+setmenu($_u,separator,"&Reset To K-Meleon On Exit");
+}
+
+$OnInit=$OnInit."useragentmode_BuildMenu;";
+$OnQuit=$OnQuit."useragentmode_Reset;";
+# ------------------------------------------------------------------------------------------------------------------
+$macroModules=$macroModules."useragentmode;";

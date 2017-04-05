@@ -1,0 +1,71 @@
+
+
+
+# ---------- JavaScript Document Handling --------------------------------------------------------------------------
+
+$JS_doit=""; $JS_func=""; $JS_last=""; $JS_fail="";
+JS_hndlDocs{
+JS_hndlDocs($JS_doit, $JS_func, $JS_last, $JS_fail);
+$JS_doit=""; $JS_func=""; $JS_last=""; $JS_fail="";
+}
+
+JS_hndlDoc{
+JS_hndlDoc($JS_doit, $JS_func, $JS_last);
+$JS_doit=""; $JS_func=""; $JS_last=""; $JS_fail="";
+}
+
+JS_hndlTop{
+JS_hndlTop($JS_doit, $JS_func, $JS_last);
+$JS_doit=""; $JS_func=""; $JS_last=""; $JS_fail="";
+}
+
+$JS_doitImage=""; $JS_doitInput="";
+JS_hndlImage{
+JS_hndlImage($JS_doitImage, $JS_doitInput);
+$JS_doitImage=""; $JS_doitInput="";
+}
+
+$JS_doitLink="";
+JS_hndlLink{
+JS_hndlLink($JS_doitLink);
+$JS_doitLink="";
+}
+
+# ----- File Handling
+
+# These macros can be used in conjunction with the exec() and
+# promptforfile() statements to get a command line and a file
+# type description for a given file extension.
+getExtensionHandler{
+# use for text files
+$cmdline = getExtensionHandler($ext);
+}
+getSecureExtensionHandler{
+# use for script files
+$cmdline = getSecureExtensionHandler($ext);
+}
+
+# ---------- Opening URLs ------------------------------------------------------------------------------------------
+
+# Except OpenURL these macros can only be called by other macros.
+
+OpenURL_InBg{
+openbgtab($OpenURL);
+}
+
+OpenURL_InNew{
+opentab($OpenURL);
+}
+
+OpenURL_InNewWindow{
+opennew($OpenURL);
+}
+
+OpenURL_Selected{
+openSelected($OpenURL);
+}
+
+OpenURL_Typed{
+# Use this method when an URL was generated from a direct user input (by typing into URL Bar or any prompt)
+openTyped($OpenURL);
+}

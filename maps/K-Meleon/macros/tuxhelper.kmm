@@ -1,0 +1,47 @@
+# K-Meleon Macros (http://kmeleon.sourceforge.net/wiki/index.php?id=MacroLanguage)
+
+# ---------- Tux needed functions for some special reason -----------------------------------------
+#
+# Dependencies	: main (for $tux value)
+# Resources	: -
+# Preferences	: 
+#
+# ---------------------------------------------------------------------------------------------------
+
+_tuxMailto{
+macroinfo=_("Specify your client for mailto protocol");
+$_pref="kmeleon.plugins.macros.mail.mailtoClient";
+$_tit=_("Mailto client path configuration");
+$_txt=_("Enter your mailto client's path:");
+
+$_client=getpref(STRING,$_pref);
+$_client==""?macros($_macro):0;
+$_client=prompt($_txt,$_tit,$_client);
+$_client==""?0:setpref(STRING,$_pref,$_client);
+}
+
+_tuxOpen{
+macroinfo=_("Specify your client to open files");
+$_pref="kmeleon.plugins.macros.openClient";
+$_tit=_("Open client path configuration");
+$_txt=_("Enter your open client's path:");
+
+$_client=getpref(STRING,$_pref);
+$_client==""?macros($_macro):0;
+$_client=prompt($_txt,$_tit,$_client);
+$_client==""?0:setpref(STRING,$_pref,$_client);
+}
+
+_TuxHelper_BuildMenu{
+setmenu("_Config_General",separator,"blabla");
+setmenu("_Config_General",popup,"Tu&x Helper",0);
+setmenu("Tu&x Helper",macro,_("Configure &Mailto program"),_tuxMailto);
+setmenu("Tu&x Helper",macro,_("Configure &Open file program"),_tuxOpen);
+setmenu("Tu&x Helper",separator,"bibi");
+}
+
+
+# ---------------------------------------------------------------------------------------------------
+$OnInit=$OnInit.($tux==""?"":"_TuxHelper_BuildMenu;");
+# ---------------------------------------------------------------------------------------------------
+$macroModules=$macroModules."TuxHelper;";

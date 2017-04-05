@@ -1,0 +1,35 @@
+# K-Meleon Macros (http://kmeleon.sourceforge.net/wiki/index.php?id=MacroLanguage)
+
+# ---------- Places Extension --------------------------------------------------------------------
+#
+# Dependencies	: main.kmm (OpenURL)
+# Resources	: -
+# Preferences	: -
+#
+# ------------------------------------------------------------------------------------------------------------------
+
+Places{
+macroinfo=_("Open the history");
+opennew("chrome://browser/content/places/places.xul");
+}
+
+Places_History{
+macroinfo=_("Open the history");
+opennew("chrome://history/content/history.xul");
+}
+
+# ----- PRIVATE
+
+_Places_BuildMenu{
+# tools menu
+#setmenu(Misc,macro,"History",Places_History,"History");
+}
+
+_Places_SetAccels{
+setaccel("CTRL H","macros(Places_History())");
+}
+
+$OnInit=$OnInit."_Places_BuildMenu;"."_Places_SetAccels;";
+
+# ------------------------------------------------------------------------------------------------------------------
+$macroModules=$macroModules."Places;";

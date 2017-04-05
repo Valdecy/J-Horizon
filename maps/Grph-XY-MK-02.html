@@ -1,0 +1,104 @@
+<html>
+<head>
+   <title>xy Map</title>
+   <meta charset = "utf-8" />
+   
+   <link 
+   rel  = "stylesheet" 
+   type = "text/css" 
+   href = "jsxgraph-0.99.5\jsxgraph.css" 
+   />
+   
+   <script 
+   type = "text/javascript" 
+   src  = "jsxgraph-0.99.5\jsxgraphcore.js"
+   ></script>  
+</head>
+<body>
+  <div id = "myBox" class = "jxgbox center-block" style = "width:100%; height:100%; border: 1px solid black"></div>
+   
+   <!-- import scripts -->
+   <script src  = "xy.js"></script> 
+   
+   <!-- code -->
+   <script type="text/javascript">
+         
+		var xp = -100000000000000000;
+		var xn =  100000000000000000;
+		var yp = -100000000000000000;
+		var yn =  100000000000000000;
+		
+		for (i = 0; i < xy.length; i++) { 
+			if (xp <= xy[i][0]){
+			
+				xp = xy[i][0];
+			}
+			if (yp <= xy[i][1]){
+			
+				yp = xy[i][1];
+			}
+		   if (xn > xy[i][0]){
+		   
+				xn = xy[i][0];
+			}
+		   if (yn > xy[i][1]){
+		   
+				yn = xy[i][1];
+			}
+		}
+		
+		xn = (xn - 1)*1.21;
+		yp = (yp + 1)*1.21;
+		xp = (xp + 1)*1.21;
+		yn = (yn - 1)*1.21; 
+		
+		if (xn >= 0){
+			xn = -1.21;
+		}
+		
+		if (yn >= 0){
+			yn = -1.21;
+		}
+		
+		if (xp <= 0){
+			xp = 1.21;
+		}
+		
+		if (yp <= 0){
+			yp = 1.21;
+		}
+		
+		<!-- chart -->
+        var board = JXG.JSXGraph.initBoard('myBox', 
+		{
+		boundingbox:[xn, yp, xp, yn],  
+		axis:{ ticks: { drawLabels: true }, firstArrow: true, strokeColor: 'black' },
+		grid: { strokeWidth: 0.75 },
+		showNavigation: true,		
+		showCopyright:false,
+		keepaspectratio: false
+		}
+		);
+		<!-- end chart -->
+		
+		<!-- add points -->
+		for (var i = 0; i < xy.length; i++) {
+			if (i < depots){
+			board.create('point', [xy[i][0], xy[i][1]], {name:xy[i][2], face: '[]', size: 5, strokeColor: 'black', fillColor: 'goldenrod', highlightStrokeColor: 'green', highlightFillColor: 'green' }).setProperty({fixed:true});
+			}
+			if (i >= depots){
+			board.create('point',[xy[i][0], xy[i][1]], {name: xy[i][2], face:'o' , size: 3, strokeColor: 'black', fillColor:'slateblue', highlightStrokeColor: 'red', highlightFillColor: 'red'}).setProperty({fixed:true});
+			}
+	    }
+		<!-- end add points -->
+		
+	    <!-- route -->		
+		
+		<!-- end route -->
+		
+  </script>
+  <!-- end code -->
+  <!-- end import scripts -->
+  
+</body>
+</html>
