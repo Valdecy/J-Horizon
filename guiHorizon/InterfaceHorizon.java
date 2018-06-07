@@ -1385,6 +1385,9 @@ public class InterfaceHorizon{
 						}
 						if (Fleet_Size == 2){
 							table_Clients.getModel().setValueAt("Infinite", i, (18 + 7*j));
+							table_Clients.getModel().setValueAt("-//-",  i, (22 + 7*j));
+							table_Clients.getModel().setValueAt("-//-",  i, (23 + 7*j));
+							table_Clients.getModel().setValueAt("-//-",  i, (24 + 7*j));
 						}
 					}
 					for(int j = 18 + 7*TypesVehicles; j < table_Clients.getColumnCount() ; j++){
@@ -1432,6 +1435,9 @@ public class InterfaceHorizon{
 						table_Clients.getModel().setValueAt("1", i, 18);
 					}else if(Fleet_Size == 2){
 						table_Clients.getModel().setValueAt("Infinite", i, 18);
+						table_Clients.getModel().setValueAt("-//-",  i, 22);
+						table_Clients.getModel().setValueAt("-//-",  i, 23);
+						table_Clients.getModel().setValueAt("-//-",  i, 24);
 					}
 					if (Model_Selection == 1 && Vehicle_Capacity == 1){
 						table_Clients.getModel().setValueAt(" 1 ", i, 18);
