@@ -1,22 +1,5 @@
 package guiHorizon;
 
-//Copyright @ 2017 by Valdecy Pereira
-
-//This file is part of J-Horizon.
-//
-//J-ELECTRE is free software: you can redistribute it and/or modify
-//it under the terms of the GNU General Public License as published by
-//the Free Software Foundation, either version 3 of the License, or
-//(at your option) any later version.
-//
-//J-Horizon is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
-//
-//You should have received a copy of the GNU General Public License
-//along with J-Horizon.  If not, see <http://www.gnu.org/licenses/>.
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -155,8 +138,8 @@ public class InterfaceHorizon{
 		rdbtnAnimatedDisplay.setEnabled(false);
 		
 		JFrame f = new JFrame("J-Horizon: A Vehicle Routing Problem Software - github.com/Valdecy");
+		f.setVisible(false);
 		f.setSize(1220, 638);
-		f.setVisible(true);
 		f.getContentPane().setLayout(new BorderLayout(0, 0));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -175,6 +158,16 @@ public class InterfaceHorizon{
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(false);
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		JDialog warmup = new JDialog();
+		JLabel lbl_warmup = new JLabel("                Warming up Engines");
+		warmup.setTitle("");
+		warmup.getContentPane().add(lbl_warmup);
+		warmup.pack();
+		warmup.setSize(210,65);
+		warmup.setLocationRelativeTo(null);
+		warmup.setVisible(false);
+		warmup.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		class IPanel extends JPanel {
 			private static final long serialVersionUID = 1L;
@@ -1298,6 +1291,7 @@ public class InterfaceHorizon{
 					tabbedPane.setEnabledAt(3, true);
 					tabbedPane.setSelectedIndex(3);
 					dialog.setVisible(false);
+					btnMapRoutes.setEnabled(true);
 					
 				}
 			}
@@ -2546,7 +2540,15 @@ public class InterfaceHorizon{
 					getRoute[i][5] = stringArray_02[i];
 					getRoute[i][6] = stringArray_03[i];
 				}
-				
+				for (int i = 0; i < getRoute.length; i++) {
+					getRoute[i][0] = getRoute[i][0].replace(",", ".");
+					getRoute[i][1] = getRoute[i][1].replace(",", ".");
+					getRoute[i][2] = getRoute[i][2].replace(",", ".");
+					getRoute[i][3] = getRoute[i][3].replace(",", ".");
+					getRoute[i][4] = getRoute[i][4].replace(",", ".");
+					getRoute[i][5] = getRoute[i][5].replace(",", ".");
+					getRoute[i][6] = getRoute[i][6].replace(",", ".");
+				}		
 					try {
 						jsHorizon.writeFileRoute_VRP(getRoute);
 						jsHorizon.writeFileRoute_VRP_Complete(getRoute);
@@ -2601,6 +2603,9 @@ public class InterfaceHorizon{
 		});
 
 		panel_Input.add(btnMapRoutes, "cell 2 0");
-
+		warmup.setVisible(true);
+		Util_WarmUp.engines();
+		warmup.setVisible(false);
+		f.setVisible(true);
 	}
 }
