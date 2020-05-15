@@ -1,6 +1,6 @@
 The J-Horizon is java based vehicle problem software that uses the jsprit library to solve: Capacitated VRP, Multiple Depot VRP, VRP with Time Windows, VRP with Backhauls, VRP with Pickups and Deliveries, VRP with Homogeneous or Heterogeneous Fleet, TSP, mTSP and various combination of these types.
 
-Download J-Horizon at: https://sourceforge.net/projects/j-horizon/files/
+Download J-Horizon (Update-15-MAY-2020) at: https://sourceforge.net/projects/j-horizon/files/
 
 
 Citation: 
@@ -14,6 +14,3 @@ Site: https://jsxgraph.uni-bayreuth.de
 
 #### Leaflet ##### Urban Map representation
 Site: http://leafletjs.com
-
-#### K-Meleon ##### Browser
-Site: http://kmeleonbrowser.org/
