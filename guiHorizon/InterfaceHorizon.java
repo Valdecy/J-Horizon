@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 
 import javax.swing.JSpinner;
 import javax.swing.JLabel;
@@ -159,15 +160,15 @@ public class InterfaceHorizon{
 		dialog.setVisible(false);
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		
-		JDialog warmup = new JDialog();
-		JLabel lbl_warmup = new JLabel("                Warming up Engines");
-		warmup.setTitle("");
-		warmup.getContentPane().add(lbl_warmup);
-		warmup.pack();
-		warmup.setSize(210,65);
-		warmup.setLocationRelativeTo(null);
-		warmup.setVisible(false);
-		warmup.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		//JDialog warmup = new JDialog();
+		//JLabel lbl_warmup = new JLabel("                Warming up Engines");
+		//warmup.setTitle("");
+		//warmup.getContentPane().add(lbl_warmup);
+		//warmup.pack();
+		//warmup.setSize(210,65);
+		//warmup.setLocationRelativeTo(null);
+		//warmup.setVisible(false);
+		//warmup.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		class IPanel extends JPanel {
 			private static final long serialVersionUID = 1L;
@@ -245,7 +246,7 @@ public class InterfaceHorizon{
 			}
 		});
 
-		JRadioButton rdbtnMTSP = new JRadioButton("MTSP    ( Multiple TSP )");
+		JRadioButton rdbtnMTSP = new JRadioButton("mTSP    ( Multiple TSP )");
 		buttonGroup_1.add(rdbtnMTSP);
 		panel_1.add(rdbtnMTSP, "cell 0 2");
 		rdbtnMTSP.addActionListener(new ActionListener() {
@@ -951,13 +952,13 @@ public class InterfaceHorizon{
 					table_Clients.getColumnModel().getColumn(i).setWidth(0);
 				}
 
-				if (Distances == 4 || Map_Preferences == 2){
-					lblVelocitykmh.setEnabled(false);
-					spinner_Velocity.setEnabled(false);
-				}else{
-					lblVelocitykmh.setEnabled(true);
-					spinner_Velocity.setEnabled(true);
-				}
+				//if (Distances == 4 || Map_Preferences == 2){
+					//lblVelocitykmh.setEnabled(false);
+					//spinner_Velocity.setEnabled(false);
+				//}else{
+					//lblVelocitykmh.setEnabled(true);
+					//spinner_Velocity.setEnabled(true);
+				//}
 
 				spinner_NumberOfClients.setValue(1);
 				spinner_NumberOfDepots.setValue(1);
@@ -1671,8 +1672,10 @@ public class InterfaceHorizon{
 
 				File url_change_map  = new File(map);
 				String exe = "maps/K-Meleon";
+				//String exe = "maps/min";
 				File exe_path  = new File(exe);
 				ProcessBuilder process = new ProcessBuilder(exe_path.getAbsolutePath() + "\\k-meleon.exe", "file:///" + url_change_map.getAbsolutePath());
+				//ProcessBuilder process = new ProcessBuilder(exe_path.getAbsolutePath() + "\\min.exe", "file:///" + url_change_map.getAbsolutePath());
 				process.directory(new File(exe_path.getAbsolutePath()));
 				try {
 					process.start();
@@ -2073,10 +2076,10 @@ public class InterfaceHorizon{
 								for (int j = 0; j < (p + q); j++){
 
 									euclidean2[i][j] = Util_Euclidean.euclidean_distance(getValue[i][2], getValue[i][3], getValue[j][2], getValue[j][3]);
-									euclidean2_time[i][j] = ((euclidean2[i][j])/Speed);
+									euclidean2_time[i][j] = ((euclidean2[i][j])/Speed)*60;
 
 									euclidean2[j][i] = Util_Euclidean.euclidean_distance(getValue[i][2], getValue[i][3], getValue[j][2], getValue[j][3]);
-									euclidean2_time[j][i] = ((euclidean2[j][i])/Speed);
+									euclidean2_time[j][i] = ((euclidean2[j][i])/Speed)*60;
 								}
 							}
                             
@@ -2092,10 +2095,10 @@ public class InterfaceHorizon{
 								for (int j = 0; j < (p + q); j++){
 									
 									manhattan2[i][j] = Util_Manhattan.manhattan_distance(getValue[i][2], getValue[i][3], getValue[j][2], getValue[j][3]);
-									manhattan2_time[i][j] = ((manhattan2[i][j])/Speed);
+									manhattan2_time[i][j] = ((manhattan2[i][j])/Speed)*60;
 
 									manhattan2[j][i] = Util_Manhattan.manhattan_distance(getValue[i][2], getValue[i][3], getValue[j][2], getValue[j][3]);
-									manhattan2_time[j][i] = ((manhattan2[j][i])/Speed);
+									manhattan2_time[j][i] = ((manhattan2[j][i])/Speed)*60;
 								}
 							}
 							Model_Builder_and_Solver_01.TSP_CostMatrix(getValue, manhattan2, manhattan2_time, p, q);
@@ -2333,11 +2336,11 @@ public class InterfaceHorizon{
 									 
 									   euclidean2[i][j] = Util_Euclidean
 									   .euclidean_distance(vector[i][0], vector[i][1], vector[j][0], vector[j][1]);
-									   euclidean2_time[i][j] = ((euclidean2[i][j])/Speed);
+									   euclidean2_time[i][j] = ((euclidean2[i][j])/Speed)*60;
 									   
 									   euclidean2[j][i] = Util_Euclidean
 									   .euclidean_distance(vector[i][0], vector[i][1], vector[j][0], vector[j][1]);
-									   euclidean2_time[j][i] = ((euclidean2[j][i])/Speed);
+									   euclidean2_time[j][i] = ((euclidean2[j][i])/Speed)*60;
 		
 								 }
 							 }
@@ -2370,11 +2373,11 @@ public class InterfaceHorizon{
 									 
 									 manhattan2[i][j] = Util_Manhattan
 									 .manhattan_distance(vector[i][0], vector[i][1], vector[j][0], vector[j][1]);
-									 manhattan2_time[i][j] = ((manhattan2[i][j])/Speed);
+									 manhattan2_time[i][j] = ((manhattan2[i][j])/Speed)*60;
 									   
 									 manhattan2[j][i] = Util_Manhattan
 									 .manhattan_distance(vector[i][0], vector[i][1], vector[j][0], vector[j][1]);
-									 manhattan2_time[j][i] = ((manhattan2[j][i])/Speed);
+									 manhattan2_time[j][i] = ((manhattan2[j][i])/Speed)*60;
 		
 								 }
 							 }
@@ -2547,14 +2550,15 @@ public class InterfaceHorizon{
 					getRoute[i][6] = stringArray_03[i];
 				}
 				for (int i = 0; i < getRoute.length; i++) {
-					getRoute[i][0] = getRoute[i][0].replace(",", ".");
-					getRoute[i][1] = getRoute[i][1].replace(",", ".");
-					getRoute[i][2] = getRoute[i][2].replace(",", ".");
-					getRoute[i][3] = getRoute[i][3].replace(",", ".");
-					getRoute[i][4] = getRoute[i][4].replace(",", ".");
-					getRoute[i][5] = getRoute[i][5].replace(",", ".");
-					getRoute[i][6] = getRoute[i][6].replace(",", ".");
-				}		
+					getRoute[i][0] = (String)getRoute[i][0].replace(",", ".");
+					getRoute[i][1] = (String)getRoute[i][1].replace(",", ".");
+					getRoute[i][2] = (String)getRoute[i][2].replace(",", ".");
+					getRoute[i][3] = (String)getRoute[i][3].replace(",", ".");
+					getRoute[i][4] = (String)getRoute[i][4].replace(",", ".");
+					getRoute[i][5] = (String)getRoute[i][5].replace(",", ".");
+					getRoute[i][6] = (String)getRoute[i][6].replace(",", ".");
+				}
+				
 					try {
 						jsHorizon.writeFileRoute_VRP(getRoute);
 						jsHorizon.writeFileRoute_VRP_Complete(getRoute);
@@ -2597,21 +2601,33 @@ public class InterfaceHorizon{
 					route  = "maps/Grph-XY-RT-03-Open-Animation.html";
 				}
 				File url_change_route  = new File(route);
-				String exe = "maps/K-Meleon";
-				File exe_path  = new File(exe);
-				ProcessBuilder process = new ProcessBuilder(exe_path.getAbsolutePath() + "\\k-meleon.exe", "file:///" + url_change_route.getAbsolutePath());
-				process.directory(new File(exe_path.getAbsolutePath()));
-				try {
-					process.start();
-				} catch (IOException e) {
-				}
+				
+			    try {
+			        Desktop desktop = null;
+			        if (Desktop.isDesktopSupported()) {
+			          desktop = Desktop.getDesktop();
+			        }
+			         desktop.open(url_change_route);
+			      } catch (IOException ioe) {
+			        ioe.printStackTrace();
+			      }
+				//String exe = "maps/K-Meleon";
+				//String exe = "maps/min";
+				//File exe_path  = new File(exe);
+				//ProcessBuilder process = new ProcessBuilder(exe_path.getAbsolutePath() + "\\k-meleon.exe", "file:///" + url_change_route.getAbsolutePath());
+				//ProcessBuilder process = new ProcessBuilder(exe_path.getAbsolutePath() + "\\min.exe", "file:///" + url_change_route.getAbsolutePath());
+				//process.directory(new File(exe_path.getAbsolutePath()));
+				//try {
+					//process.start();
+				//} catch (IOException e) {
+				//}
 			}
 		});
 
 		panel_Input.add(btnMapRoutes, "cell 2 0");
-		warmup.setVisible(true);
-		Util_WarmUp.engines();
-		warmup.setVisible(false);
+		//warmup.setVisible(true);
+		//Util_WarmUp.engines();
+		//warmup.setVisible(false);
 		f.setVisible(true);
 	}
 }
