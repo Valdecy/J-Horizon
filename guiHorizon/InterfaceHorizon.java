@@ -1671,16 +1671,27 @@ public class InterfaceHorizon{
 				}
 
 				File url_change_map  = new File(map);
-				String exe = "maps/K-Meleon";
+						
+			    try {
+			        Desktop desktop = null;
+			        if (Desktop.isDesktopSupported()) {
+			          desktop = Desktop.getDesktop();
+			        }
+			         desktop.open(url_change_map);
+			      } catch (IOException ioe) {
+			        ioe.printStackTrace();
+			      }
+				
+				//String exe = "maps/K-Meleon";
 				//String exe = "maps/min";
-				File exe_path  = new File(exe);
-				ProcessBuilder process = new ProcessBuilder(exe_path.getAbsolutePath() + "\\k-meleon.exe", "file:///" + url_change_map.getAbsolutePath());
+				//File exe_path  = new File(exe);
+				//ProcessBuilder process = new ProcessBuilder(exe_path.getAbsolutePath() + "\\k-meleon.exe", "file:///" + url_change_map.getAbsolutePath());
 				//ProcessBuilder process = new ProcessBuilder(exe_path.getAbsolutePath() + "\\min.exe", "file:///" + url_change_map.getAbsolutePath());
-				process.directory(new File(exe_path.getAbsolutePath()));
-				try {
-					process.start();
-				} catch (IOException e) {
-				}
+				//process.directory(new File(exe_path.getAbsolutePath()));
+				//try {
+					//process.start();
+				//} catch (IOException e) {
+				//}
 			}
 		});
 
