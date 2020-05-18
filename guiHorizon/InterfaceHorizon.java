@@ -1673,11 +1673,11 @@ public class InterfaceHorizon{
 				File url_change_map  = new File(map);
 						
 			    try {
-			        Desktop desktop = null;
+			        Desktop desktop_ = null;
 			        if (Desktop.isDesktopSupported()) {
-			          desktop = Desktop.getDesktop();
+			          desktop_ = Desktop.getDesktop();
 			        }
-			         desktop.open(url_change_map);
+			         desktop_.open(url_change_map);
 			      } catch (IOException ioe) {
 			        ioe.printStackTrace();
 			      }
